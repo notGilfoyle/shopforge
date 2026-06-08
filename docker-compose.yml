@@ -1,0 +1,48 @@
+# docker-compose.yml
+#
+# Runs two databases locally for ShopForge:
+#   - PostgreSQL: handles transactional data (users, orders, payments, inventory)
+#   - MongoDB:    handles the product catalog and reviews (flexible/schema-less data)
+#
+# Usage:
+#   docker compose up -d        # start both databases in the background
+#   docker compose down         # stop and remove containers (data is preserved in volumes)
+#   docker compose down -v      # stop AND delete all data (full reset)
+
+version: "3.9"
+
+services:
+
+  # ─── PostgreSQL ──────────────────────────────────────────────────────────────
+  postgres:
+    image: postgres:16          # pinned major version so upgrades are intentional
+    container_name: shopforge_postgres
+    restart: unless-stopped     # restarts on crash, but not if you manually stop it
+    environment:
+      POSTGRES_USER: shopforge
+      POSTGRES_PASSWORD: shopforge_pass   # fine for local dev; never use in production
+      POSTGRES_DB: shopforge
+    ports:
+      - "5433:5432"             # host:container — 5433 avoids conflict with any local Postgres on 5432
+    volumes:
+      - postgres_data:/var/lib/postgresql/data   # named volume keeps data between restarts
+
+  # ─── MongoDB ─────────────────────────────────────────────────────────────────
+  mongo:
+    image: mongo:7              # pinned major version
+    container_name: shopforge_mongo
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: shopforge
+      MONGO_INITDB_ROOT_PASSWORD: shopforge_pass
+      MONGO_INITDB_DATABASE: shopforge
+    ports:
+      - "27018:27017"           # host:container — 27018 avoids conflict with any local MongoDB on 27017
+    volumes:
+      - mongo_data:/data/db     # named volume keeps data between restarts
+
+# Named volumes are managed by Docker and persist on your machine even after
+# containers are stopped. "docker compose down -v" removes them completely.
+volumes:
+  postgres_data:
+  mongo_data:

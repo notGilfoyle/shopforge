@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(uv sync *)",
+      "Bash(docker compose *)",
+      "Bash(uv run *)",
+      "Bash(docker volume *)",
+      "Bash(docker exec *)",
+      "Bash(curl -s http://localhost:8000/products)",
+      "Bash(uv add *)",
+      "Bash(alembic init *)",
+      "Bash(npm --version)",
+      "Bash(npm create *)",
+      "Bash(npx create-vite@5 . --template react-ts)",
+      "Bash(npm install *)",
+      "Bash(npm run *)",
+      "Bash(gh auth *)"
+    ]
+  }
+}

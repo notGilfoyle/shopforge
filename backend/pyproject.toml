@@ -1,0 +1,17 @@
+[project]
+name = "shopforge-backend"
+version = "0.1.0"
+requires-python = ">=3.12"
+dependencies = [
+    # FastAPI with "standard" extras bundles uvicorn, python-multipart, etc.
+    "fastapi[standard]>=0.115",
+    # SQLAlchemy 2.x with async support — we'll use this for PostgreSQL models later
+    "sqlalchemy[asyncio]>=2.0",
+    # asyncpg is the async PostgreSQL driver SQLAlchemy uses under the hood
+    "asyncpg>=0.30",
+    # motor is the async MongoDB driver (wraps pymongo for use with asyncio)
+    "motor>=3.6",
+    # pydantic-settings reads .env files into typed Python objects
+    "pydantic-settings>=2.0",
+    "alembic>=1.18.4",
+]
